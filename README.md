@@ -17,3 +17,10 @@ To stop the Kafka broker deployed to test the tutorial's code, execute the below
     docker-compose down
     docker-compose rm
 
+### Getting started to Smallrye Reactive Messaging with Apache Kafka
+
+The code written following the [Getting started to Smallrye Reactive Messaging with Apache Kafka](https://quarkus.io/guides/kafka-reactive-getting-started) 
+tutorial is stored in the folder [`kafka-quickstart`](./kafka-quickstart) of this repository. This folder contains the following projects:
+
++ [kafka-quickstart-processor](./kafka-quickstart/kafka-quickstart-processor);
++ [ kafka-quickstart-producer](./kafka-quickstart/kafka-quickstart-producer);
