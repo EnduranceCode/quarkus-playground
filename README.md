@@ -24,3 +24,7 @@ tutorial is stored in the folder [`kafka-quickstart`](./kafka-quickstart) of thi
 
 + [kafka-quickstart-processor](./kafka-quickstart/kafka-quickstart-processor);
 + [ kafka-quickstart-producer](./kafka-quickstart/kafka-quickstart-producer);
+
+### Collect Metrics using Micrometer
+
+The code written following the [Collect Metrics using Micrometer](https://quarkus.io/guides/telemetry-micrometer-tutorial) tutorial is stored in the folder [`micrometer-quickstart`](./micrometer-quickstart) of this repository.
