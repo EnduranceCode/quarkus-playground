@@ -2,11 +2,15 @@ package com.endurancecode.micrometer.rest;
 
 
 import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tags;
 import io.micrometer.core.instrument.Timer;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+
+import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
 @Path("/api")
 @Produces("text/plain")
@@ -19,12 +23,15 @@ public class PrimeNumberResource {
 
     private static final String PRIME_NUMBER_COUNTER_NAME = "api.prime.number";
     private static final String PRIME_NUMBER_TEST_TIMER_NAME = "api.prime.number.test";
+    private static final String LIST_GAUGE_NAME = "api.list.size";
     private static final String MICROMETER_LABEL_TYPE = "type";
 
     private final MeterRegistry registry;
+    private final LinkedList<Long> list = new LinkedList<>();
 
     PrimeNumberResource(MeterRegistry registry) {
         this.registry = registry;
+        registry.gaugeCollectionSize(LIST_GAUGE_NAME, Tags.empty(), list);
     }
 
     @GET
@@ -49,6 +56,23 @@ public class PrimeNumberResource {
             registry.counter(PRIME_NUMBER_COUNTER_NAME, MICROMETER_LABEL_TYPE, "not-prime").increment();
             return number + MESSAGE_IS_NOT_PRIME;
         }
+    }
+
+    @GET
+    @Path("gauge/{number}")
+    public Long checkListSize(@PathParam("number") long number) {
+        if (number == 2 || number % 2 == 0) {
+            // Add even numbers to the list
+            list.add(number);
+        } else {
+            // Remove items from the list for odd numbers
+            try {
+                number = list.removeFirst();
+            } catch (NoSuchElementException nse) {
+                number = 0;
+            }
+        }
+        return number;
     }
 
     protected boolean timedTestPrimeNumber(long number) {
