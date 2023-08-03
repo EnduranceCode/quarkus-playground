@@ -14,6 +14,9 @@ public class PrimeNumberResource {
     private static final String MESSAGE_IS_NOT_PRIME = " is not prime.";
     private static final String MESSAGE_IST_PRIME = " is prime.";
 
+    private static final String PRIME_NUMBER_COUNTER_NAME = "api.prime.number";
+    private static final String COUNTER_LABEL_TYPE = "type";
+
     private final MeterRegistry registry;
 
     PrimeNumberResource(MeterRegistry registry) {
@@ -24,17 +27,22 @@ public class PrimeNumberResource {
     @Path("prime/{number}")
     public String checkIfPrime(@PathParam("number") long number) {
         if (number < 1) {
+            registry.counter(PRIME_NUMBER_COUNTER_NAME, COUNTER_LABEL_TYPE, "not-natural").increment();
             return "Only natural numbers can be prime numbers.";
         }
         if (number == 1) {
+            registry.counter(PRIME_NUMBER_COUNTER_NAME, COUNTER_LABEL_TYPE, "one").increment();
             return number + MESSAGE_IS_NOT_PRIME;
         }
         if (number == 2 || number % 2 == 0) {
+            registry.counter(PRIME_NUMBER_COUNTER_NAME, COUNTER_LABEL_TYPE, "even").increment();
             return number + MESSAGE_IS_NOT_PRIME;
         }
         if (testPrimeNumber(number)) {
+            registry.counter(PRIME_NUMBER_COUNTER_NAME, COUNTER_LABEL_TYPE, "prime").increment();
             return number + MESSAGE_IST_PRIME;
         } else {
+            registry.counter(PRIME_NUMBER_COUNTER_NAME, COUNTER_LABEL_TYPE, "not-prime").increment();
             return number + MESSAGE_IS_NOT_PRIME;
         }
     }
