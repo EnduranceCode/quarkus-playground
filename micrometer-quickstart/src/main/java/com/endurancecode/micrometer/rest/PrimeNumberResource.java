@@ -1,6 +1,7 @@
 package com.endurancecode.micrometer.rest;
 
 
+import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
@@ -12,6 +13,12 @@ public class PrimeNumberResource {
 
     private static final String MESSAGE_IS_NOT_PRIME = " is not prime.";
     private static final String MESSAGE_IST_PRIME = " is prime.";
+
+    private final MeterRegistry registry;
+
+    PrimeNumberResource(MeterRegistry registry) {
+        this.registry = registry;
+    }
 
     @GET
     @Path("prime/{number}")
